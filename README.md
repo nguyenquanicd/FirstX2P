@@ -11,6 +11,21 @@
 
 //--------------------------------------
 
+//----------------------------------
+
+Simulation environment structure
+
+//----------------------------------
+
+checker - all SV checkers if any
+
+dut - RTL code
+
+pat - all test patterns (testbenches), one testbench - one directory
+
+sim - Top of environment, header files and execution scripts
+
+uvm_comp - source code of UVM components (Sequence, Sequencer, Driver, Monitor, Scoreboard, ...)
 
 //--------------------------------------
 
