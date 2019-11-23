@@ -27,6 +27,10 @@ sim - Top of environment, header files and execution scripts
 
 uvm_comp - source code of UVM components (Sequence, Sequencer, Driver, Monitor, Scoreboard, ...)
 
+cov - coverage report and data
+
+doc - specification documents
+
 //--------------------------------------
 
 // Status: It is on-going, NOT fixed now.
