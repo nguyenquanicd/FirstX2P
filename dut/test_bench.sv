@@ -143,10 +143,11 @@ module test_bench;
 
   
   initial begin
+    #100;
     //@(posedge clk);
     @(posedge clk);
     //#1;
-    arvalid = 1'b1; araddr = 32'h0000_1000; arsize = 3'b010; arlen = 8'h01; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
+    arvalid = 1'b1; araddr = 32'h0000_0000; arsize = 3'b010; arlen = 8'h03; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
     $display("================================================================================");
     $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
 
@@ -159,16 +160,17 @@ module test_bench;
   end
   
   initial begin
+    #100;
     @(posedge clk);
 	//#1;
 	rready = 1'b1;
   end
-
+  
   initial begin
-    @(posedge clk);
+    #100;
     @(posedge clk);
       //#1;
-      awvalid = 1'b1; awaddr = 32'h0000_2000; awsize = 3'b010; awlen = 8'd0; awburst = 2'b01; awid = 8'd200; awprot = 3'b000;
+      awvalid = 1'b1; awaddr = 32'h0000_2000; awsize = 3'b010; awlen = 8'd3; awburst = 2'b10; awid = 8'd200; awprot = 3'b000;
       $display("================================================================================");
       $display("At time [%0d], AXI master is sending an address = %h", $stime, awaddr);
 
@@ -181,9 +183,25 @@ module test_bench;
   end
   
   initial begin
+    #100;
     @(posedge clk);
       //#1;
-      wvalid = 1'b1; wstrb = 4'b1111; wlast = 1; wdata = 32'hFFFF;
+      wvalid = 1'b1; wstrb = 4'b1111; wlast = 0; wdata = 32'hFFFF_FFF0;
+      $display("================================================================================");
+      $display("At time [%0d], AXI master is sending data = %h", $stime, wdata);
+    @(posedge clk);
+      //#1;
+      wdata = 32'hFFFF_FFF1;
+      $display("================================================================================");
+      $display("At time [%0d], AXI master is sending data = %h", $stime, wdata);
+	@(posedge clk);
+      //#1;
+      wdata = 32'hFFFF_FFF2;
+      $display("================================================================================");
+      $display("At time [%0d], AXI master is sending data = %h", $stime, wdata);
+	@(posedge clk);
+      //#1;
+      wdata = 32'hFFFF_FFF3; wlast = 1;
       $display("================================================================================");
       $display("At time [%0d], AXI master is sending data = %h", $stime, wdata);
 	@(posedge clk);
@@ -192,15 +210,40 @@ module test_bench;
       $display("================================================================================");
       $display("At time [%0d], wlast = %b", $stime, wlast);
 
-    @(posedge clk);
       while(wready != 1) @(posedge clk);
-      #1;
+      //#1;
       wvalid = 1'b0; wstrb = 4'd0; wlast = 0; wdata = 32'd0;
       $display("At time [%0d], AXI sent data completely", $stime);
       $display("================================================================================");
   end
+
+  initial begin
+    #100;
+    @(posedge clk);
+    @(posedge clk);
+    //#1;
+    arvalid = 1'b1; araddr = 32'h0000_1000; arsize = 3'b010; arlen = 8'h04; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
+    $display("================================================================================");
+    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
+
+    @(posedge clk);
+    while(arready != 1) @(posedge clk);
+    //#1;
+    arvalid = 1'b0; araddr = 32'd0; arsize = 3'b000; arlen = 8'd0; arburst = 2'b00; arid = 8'd0; arprot = 3'b000;
+    $display("At time [%0t] AXI master has send address_read completely", $stime);
+    $display("================================================================================");
+  end
   
   initial begin
+    #100;
+    @(posedge clk);
+	//#1;
+	rready = 1'b1;
+  end
+
+  
+  initial begin
+    #100;
     @(posedge clk)
       //#1;
 	  bready = 1;
