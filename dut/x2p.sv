@@ -192,6 +192,7 @@ module x2p (// AXI protocol
   logic [SLAVE_NUM:0]             preadyOut;
   logic [SLAVE_NUM:0]             pslverrOut;
   logic [SLAVE_NUM:0][31:0]       prdataOut;
+  logic [7:0]                     cnt_transfer;
   //body
   //X2P_SFIFO_AR
   sfifo #(.DATA_WIDTH(X2P_SFIFO_AR_DATA_WIDTH), .POINTER_WIDTH(POINTER_WIDTH)) ar_sfifo (
@@ -227,7 +228,7 @@ module x2p (// AXI protocol
   assign rvalid          = sfifoRdNotEmpty;
   assign sfifoRdRe       = rvalid & rready;
   assign transCntEn      = |psel[SLAVE_NUM:0] & penable & preadyX;
-  assign sfifoRdWe       = sfifoRdNotFull & transCntEn;
+  assign sfifoRdWe       = sfifoRdNotFull & transCntEn & ~pwrite;
   //RD_CH
   //rChRresp
   always_comb begin
@@ -238,9 +239,9 @@ module x2p (// AXI protocol
 	else
 	  rChRresp = PSLVERR;
   end
-  //rChRlast
+  //rlast
   always_comb begin
-    if(transCompleted)
+    if(transCompleted & abtGrant[0])
 	  rlast = 1'b1;
 	else
       rlast = 1'b0;	
@@ -278,13 +279,13 @@ module x2p (// AXI protocol
   assign sfifoWdNotEmpty = ~sfifoWdEmpty;
   assign wready          = sfifoWdNotFull;
   assign sfifoWdWe       = wvalid & wready;
-  assign sfifoWdRe       = sfifoWdNotEmpty & abtGrant[1] & transCntEn;
+  assign sfifoWdRe       = sfifoWdNotEmpty & abtGrant[1] & (currentState == ACCESS);
   //B_CH
   //bresp
   always_ff @(posedge aclk, negedge aresetn) begin
     if(~aresetn)
 	  bresp[1:0] <= OKAY;
-    else if(transCompleted) begin
+    else if(transCompleted & abtGrant[1]) begin
 	  if(~pslverrX)
 	    bresp[1:0] <= OKAY;
 	  else if(decError)
@@ -297,15 +298,19 @@ module x2p (// AXI protocol
   always_ff @(posedge aclk, negedge aresetn) begin
     if(~aresetn)
 	  bid[7:0] <= 8'd0;
-    else if(transCompleted)
+    else if(transCompleted && abtGrant[1] == 1'b1)
 	  bid[7:0] <= sfifoAwAwid[7:0];
+	else
+	  bid[7:0] <= 8'd0;
   end
   //bvalid
   always_ff @(posedge aclk, negedge aresetn) begin
     if(~aresetn)
 	  bvalid <= 1'b0;
-	else if(transCompleted)
+	else if(transCompleted && abtGrant[1] == 1'b1)
 	  bvalid <= 1'b1;
+	else
+	  bvalid <= 1'b0;
   end
   //ARBITER
   //nextSel0
@@ -532,6 +537,14 @@ module x2p (// AXI protocol
 	end
   endgenerate
   //transfer
+  always_comb begin
+    if(cnt_transfer[7:0] >= selectLen[7:0] + 1'b1)
+	  transfer = 0;
+	else if( |sel[SLAVE_NUM:0])
+	  transfer = 1;
+	else
+	  transfer = 0;
+  end
   //always_ff @(posedge pclk, negedge preset_n) begin
     //if(~preset_n)
 	 // transfer <= 1'b0;
@@ -540,7 +553,17 @@ module x2p (// AXI protocol
 	//else if(|sel[SLAVE_NUM:0])//
 	//  transfer <= 1'b1;
   //end
-  assign transfer = |sel[SLAVE_NUM:0];
+  //assign transfer = |sel[SLAVE_NUM:0];
+  //cnt_transfer
+  always_ff @(posedge pclk, negedge preset_n) begin
+    if(~preset_n)
+	  cnt_transfer[7:0] <= 8'd0;
+	else if(transCompleted)
+	  cnt_transfer[7:0] <= 8'd0;
+	//else if((currentState == IDLE && transfer == 1'b1)|(currentState == ACCESS && transfer == 1'b1))
+	else if(transfer & (currentState == ACCESS || currentState == IDLE))
+	  cnt_transfer <= cnt_transfer + 1'b1;
+  end
   //nextState circuit
   always_comb begin
     case(currentState[1:0])
