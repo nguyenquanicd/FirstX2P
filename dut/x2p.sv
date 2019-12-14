@@ -664,18 +664,26 @@ module x2p (// AXI protocol
   always_comb begin
     if(bitNum[2:0] == 3'b011)
 	  bit3Addr[2:0] = paddr[2:0] + 3'd4;
+	else
+	  bit3Addr[2:0] = 3'd0;
   end
   always_comb begin
     if(bitNum[2:0] == 3'b100)
 	  bit4Addr[3:0] = paddr[3:0] + 4'd4;
+	else
+	  bit4Addr[3:0] = 4'd0;
   end
   always_comb begin
     if(bitNum[2:0] == 3'b101)
 	  bit5Addr[4:0] = paddr[4:0] + 4'd4;
+	else
+	  bit5Addr[4:0] = 5'd0;
   end
   always_comb begin
     if(bitNum[2:0] == 3'b110)
 	  bit6Addr[5:0] = paddr[5:0] + 4'd4;
+	else
+	  bit6Addr[5:0] = 6'd0;
   end
   //wrapNextTransAddr
   always_comb begin
