@@ -14,7 +14,7 @@ parameter OKAY                    = 2'b00;
 parameter DECERR                  = 2'b11;
 parameter PSLVERR                 = 2'b10;
 //parameter SLAVE_NUM is used to set number of APB slave
-parameter SLAVE_NUM = 4;
+parameter SLAVE_NUM = 4 ;
 //address of Register block
 parameter A_START_REG     = 32'h0000_0000;
 parameter A_END_REG       = 32'h0000_0FFF; 
