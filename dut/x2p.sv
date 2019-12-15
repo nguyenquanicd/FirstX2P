@@ -193,6 +193,7 @@ module x2p (// AXI protocol
   logic [SLAVE_NUM:0]             pslverrOut;
   logic [SLAVE_NUM:0][31:0]       prdataOut;
   logic [7:0]                     cnt_transfer;
+  logic                           update;
   //body
   //X2P_SFIFO_AR
   sfifo #(.DATA_WIDTH(X2P_SFIFO_AR_DATA_WIDTH), .POINTER_WIDTH(POINTER_WIDTH)) ar_sfifo (
@@ -354,10 +355,12 @@ module x2p (// AXI protocol
 	  nextGrant[0] = abtGrant[0];
   end
   //abtGrant
+  assign update = (abtGrant[0] & sfifoAwNotEmpty & ~sfifoArNotEmpty) | transCompleted;
   always_ff @(posedge aclk, negedge aresetn) begin
     if(~aresetn)
 	  abtGrant[1:0] <= 2'b01;
-	else if(transCompleted)
+	else if(update)
+    //else if(transCompleted || (abtGrant[0] == 1'b1 && sfifoAwNotEmpty == 1'b1))
 	  abtGrant[1:0] <= nextGrant[1:0];
 	else
 	  abtGrant[1:0] <= abtGrant[1:0];	  
