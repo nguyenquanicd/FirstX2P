@@ -144,7 +144,8 @@ module test_bench;
   
   initial begin
     #100;
-    //@(posedge clk);
+	@(posedge clk);
+    @(posedge clk);
     @(posedge clk);
     //#1;
     arvalid = 1'b1; araddr = 32'h0000_0000; arsize = 3'b010; arlen = 8'h03; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
@@ -152,6 +153,10 @@ module test_bench;
     $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
 
     @(posedge clk);
+    arvalid = 1'b1; araddr = 32'h0000_1000; arsize = 3'b010; arlen = 8'h03; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
+    $display("================================================================================");
+    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
+	@(posedge clk)
     while(arready != 1) @(posedge clk);
     //#1;
     arvalid = 1'b0; araddr = 32'd0; arsize = 3'b000; arlen = 8'd0; arburst = 2'b00; arid = 8'd0; arprot = 3'b000;
@@ -215,23 +220,6 @@ module test_bench;
       wvalid = 1'b0; wstrb = 4'd0; wlast = 0; wdata = 32'd0;
       $display("At time [%0d], AXI sent data completely", $stime);
       $display("================================================================================");
-  end
-
-  initial begin
-    #100;
-    @(posedge clk);
-    @(posedge clk);
-    //#1;
-    arvalid = 1'b1; araddr = 32'h0000_1000; arsize = 3'b010; arlen = 8'h04; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
-    $display("================================================================================");
-    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
-
-    @(posedge clk);
-    while(arready != 1) @(posedge clk);
-    //#1;
-    arvalid = 1'b0; araddr = 32'd0; arsize = 3'b000; arlen = 8'd0; arburst = 2'b00; arid = 8'd0; arprot = 3'b000;
-    $display("At time [%0t] AXI master has send address_read completely", $stime);
-    $display("================================================================================");
   end
   
   initial begin
