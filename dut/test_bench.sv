@@ -73,6 +73,8 @@ module test_bench;
     rst     = 1;
     #20 rst = 0;
     #50 rst = 1;
+	//#2000 rst = 0;
+	//#200 rst = 1;
   end
 
   
@@ -144,16 +146,17 @@ module test_bench;
   
   initial begin
     #100;
-	@(posedge clk);
     @(posedge clk);
-    @(posedge clk);
-    //#1;
-    arvalid = 1'b1; araddr = 32'h0000_0000; arsize = 3'b010; arlen = 8'h03; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
+    arvalid = 1'b1; araddr = 32'h0000_1000; arsize = 3'b010; arlen = 8'h05; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
     $display("================================================================================");
     $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
 
     @(posedge clk);
-    arvalid = 1'b1; araddr = 32'h0000_1000; arsize = 3'b010; arlen = 8'h03; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
+    arvalid = 1'b1; araddr = 32'h0000_2000; arsize = 3'b010; arlen = 8'h03; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
+    $display("================================================================================");
+    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
+    @(posedge clk);
+    arvalid = 1'b1; araddr = 32'h0000_3000; arsize = 3'b010; arlen = 8'h04; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
     $display("================================================================================");
     $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
 	@(posedge clk)
@@ -162,6 +165,27 @@ module test_bench;
     arvalid = 1'b0; araddr = 32'd0; arsize = 3'b000; arlen = 8'd0; arburst = 2'b00; arid = 8'd0; arprot = 3'b000;
     $display("At time [%0t] AXI master has send address_read completely", $stime);
     $display("================================================================================");
+	#1900;
+    @(posedge clk);
+    arvalid = 1'b1; araddr = 32'h0000_3000; arsize = 3'b010; arlen = 8'h05; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
+    $display("================================================================================");
+    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
+
+    @(posedge clk);
+    arvalid = 1'b1; araddr = 32'h0000_2000; arsize = 3'b010; arlen = 8'h03; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
+    $display("================================================================================");
+    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
+    @(posedge clk);
+    arvalid = 1'b1; araddr = 32'h0000_1000; arsize = 3'b010; arlen = 8'h04; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
+    $display("================================================================================");
+    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
+	@(posedge clk)
+    while(arready != 1) @(posedge clk);
+    //#1;
+    arvalid = 1'b0; araddr = 32'd0; arsize = 3'b000; arlen = 8'd0; arburst = 2'b00; arid = 8'd0; arprot = 3'b000;
+    $display("At time [%0t] AXI master has send address_read completely", $stime);
+    $display("================================================================================");
+	
   end
   
   initial begin
@@ -172,6 +196,14 @@ module test_bench;
   end
   
   initial begin
+    #100;
+    @(posedge clk);
+	//#1;
+	rready = 1'b1;
+  end
+
+//write transaction
+ initial begin
     #100;
     @(posedge clk);
       //#1;
@@ -221,15 +253,6 @@ module test_bench;
       $display("At time [%0d], AXI sent data completely", $stime);
       $display("================================================================================");
   end
-  
-  initial begin
-    #100;
-    @(posedge clk);
-	//#1;
-	rready = 1'b1;
-  end
-
-  
   initial begin
     #100;
     @(posedge clk)
@@ -240,27 +263,27 @@ module test_bench;
     if(SLAVE_NUM >= 1) begin
       prdata[1]  = 32'hFFFF_0000;
 	  pready[1]  = 1'b1;
-	  pslverr[1] = 1'b0;
+	  pslverr[1] = 1'b1;
 	end
 	if(SLAVE_NUM >= 2) begin
       prdata[2]  = 32'h00000001;
 	  pready[2]  = 1'b1;
-	  pslverr[2] = 1'b0;
+	  pslverr[2] = 1'b1;
 	end
     if(SLAVE_NUM >= 3) begin
       prdata[3]  = 32'h00000002;
 	  pready[3]  = 1'b1;
-	  pslverr[3] = 1'b0;
+	  pslverr[3] = 1'b1;
 	end
 	if(SLAVE_NUM >= 4) begin
       prdata[4]  = 32'h00000003;
 	  pready[4]  = 1'b1;
-	  pslverr[4] = 1'b0;
+	  pslverr[4] = 1'b1;
 	end
     if(SLAVE_NUM >= 5) begin
       prdata[5]  = 32'h00000004;
 	  pready[5]  = 1'b1;
-	  pslverr[5] = 1'b0;
+	  pslverr[5] = 1'b1;
 	end
 	if(SLAVE_NUM >= 6) begin
       prdata[6]  = 32'h00000005;

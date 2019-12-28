@@ -166,9 +166,9 @@ module x2p (// AXI protocol
   logic [1:0]                     nextGrant;
   logic [1:0]                     nextSel;
   //DECODER
-  bit                             pslverrX;
-  bit [31:0]                      prdataX;
-  bit                             preadyX;
+  logic                           pslverrX;
+  logic [31:0]                    prdataX;
+  logic                           preadyX;
   logic                           transCompleted;
   logic                           decError;
   logic                           transCntEn;
@@ -194,6 +194,9 @@ module x2p (// AXI protocol
   logic [SLAVE_NUM:0][31:0]       prdataOut;
   logic [7:0]                     cnt_transfer;
   logic                           update;
+  logic                           selRes;
+  logic                           transEn;
+  logic                           pselRes;
   //body
   //X2P_SFIFO_AR
   sfifo #(.DATA_WIDTH(X2P_SFIFO_AR_DATA_WIDTH), .POINTER_WIDTH(POINTER_WIDTH)) ar_sfifo (
@@ -228,7 +231,7 @@ module x2p (// AXI protocol
   assign sfifoRdNotEmpty = ~sfifoRdEmpty;
   assign rvalid          = sfifoRdNotEmpty;
   assign sfifoRdRe       = rvalid & rready;
-  assign transCntEn      = |psel[SLAVE_NUM:0] & penable & preadyX;
+  assign transCntEn      = (|psel[SLAVE_NUM:0]|pselRes) & penable & preadyX;
   assign sfifoRdWe       = sfifoRdNotFull & transCntEn & ~pwrite;
   //RD_CH
   //rChRresp
@@ -437,6 +440,73 @@ module x2p (// AXI protocol
     if(SLAVE_NUM == 32)
       assign sel[32] = (startAddr[31:0] >= A_START_SLAVE31) & (startAddr[31:0] <= A_END_SLAVE31);	  
   endgenerate
+  //selRes
+  generate
+    if(SLAVE_NUM == 1)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE0);
+	if(SLAVE_NUM == 2)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE1);
+	if(SLAVE_NUM == 3)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE2);
+	if(SLAVE_NUM == 4)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE3);
+    if(SLAVE_NUM == 5)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE4);
+	if(SLAVE_NUM == 6)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE5);
+	if(SLAVE_NUM == 7)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE6);
+	if(SLAVE_NUM == 8)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE7);
+    if(SLAVE_NUM == 9)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE8);
+	if(SLAVE_NUM == 10)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE9);
+	if(SLAVE_NUM == 11)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE10);
+	if(SLAVE_NUM == 12)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE11);
+    if(SLAVE_NUM == 13)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE12);
+	if(SLAVE_NUM == 14)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE13);
+	if(SLAVE_NUM == 15)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE14);
+	if(SLAVE_NUM == 16)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE15);
+    if(SLAVE_NUM == 17)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE16);
+	if(SLAVE_NUM == 18)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE17);
+	if(SLAVE_NUM == 19)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE18);
+	if(SLAVE_NUM == 20)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE19);
+    if(SLAVE_NUM == 21)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE20);
+	if(SLAVE_NUM == 22)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE21);
+	if(SLAVE_NUM == 23)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE22);
+	if(SLAVE_NUM == 24)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE23);
+    if(SLAVE_NUM == 25)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE24);
+	if(SLAVE_NUM == 26)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE25);
+	if(SLAVE_NUM == 27)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE26);
+	if(SLAVE_NUM == 28)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE27);
+    if(SLAVE_NUM == 29)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE28);
+	if(SLAVE_NUM == 30)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE29);
+	if(SLAVE_NUM == 31)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE30);
+	if(SLAVE_NUM == 32)
+	  assign selRes  = (startAddr[31:0] < A_START_REG)|(startAddr[31:0] > A_END_SLAVE31);
+  endgenerate
   //selectLen
   assign selectLen[7:0] = abtGrant[0] ?  sfifoArCtrlArlen[7:0] : sfifoAwCtrlAwlen[7:0];
   //transCompleted
@@ -521,8 +591,8 @@ module x2p (// AXI protocol
 	  assign decError = (startAddr[31:0] < A_START_REG) | (startAddr[31:0] > A_END_SLAVE31);
   endgenerate
   //pslverrX, preadyX
-  assign preadyX  = |preadyOut[SLAVE_NUM:0];
-  assign pslverrX = |pslverrOut[SLAVE_NUM:0];
+  assign preadyX  = |preadyOut[SLAVE_NUM:0] | pselRes;
+  assign pslverrX = |pslverrOut[SLAVE_NUM:0]| pselRes;
   generate
     genvar i;
 	for (i = 0; i <= SLAVE_NUM; i = i + 1) begin: decPreadyAndPslverr
@@ -540,13 +610,16 @@ module x2p (// AXI protocol
 	end
   endgenerate
   //transfer
-  always_comb begin
-    if(cnt_transfer[7:0] >= selectLen[7:0] + 1'b1)
-	  transfer = 0;
-	else if( |sel[SLAVE_NUM:0])
-	  transfer = 1;
+  assign transEn = |sel[SLAVE_NUM:0] | selRes;
+  always_ff @(posedge pclk, negedge preset_n) begin
+    if(~preset_n)
+	  transfer <= 1'b0;
+    else if(cnt_transfer[7:0] >= selectLen[7:0] + 1'b1)
+	  transfer <= 1'b0;
+	else if(transEn)
+	  transfer <= 1'b1;
 	else
-	  transfer = 0;
+	  transfer <= 1'b0;
   end
   //always_ff @(posedge pclk, negedge preset_n) begin
     //if(~preset_n)
@@ -600,9 +673,18 @@ module x2p (// AXI protocol
 	  psel[SLAVE_NUM:0] <= 0;
 	else begin
 	  case(currentState[1:0])
-	    IDLE:   psel[SLAVE_NUM:0] <= 0;
-	    SETUP:  psel[SLAVE_NUM:0] <= sel[SLAVE_NUM:0];
-	    ACCESS: psel[SLAVE_NUM:0] <= psel[SLAVE_NUM:0];
+	    IDLE:begin
+    	  psel[SLAVE_NUM:0] <= 0;
+		  pselRes           <= 0;
+		end
+	    SETUP:begin
+      	  psel[SLAVE_NUM:0] <= sel[SLAVE_NUM:0];
+		  pselRes           <= selRes;
+		end
+	    ACCESS:begin
+		  psel[SLAVE_NUM:0] <= psel[SLAVE_NUM:0];
+		  pselRes           <= pselRes;
+		end
 	  endcase
 	end
   end
