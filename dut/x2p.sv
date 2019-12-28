@@ -2,7 +2,7 @@
 // File name: X2P.sv
 // Project  : X2P
 // Function : IP core design of AXI to APB bridge
-// Author   : Nguyen Hung Quan, Pham Van Thang, Nguyen Trung Hieu
+// Author   : Pham Van Thang
 // Gmail    : phamanhthang147@gmail.com
 // Website  :http://nguyenquanicd.blogspot.com
 //===================================================================================
