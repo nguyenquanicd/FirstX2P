@@ -214,7 +214,7 @@ module x2p (// AXI protocol
   assign sfifoArNotEmpty = ~sfifoArEmpty;
   assign arready         = sfifoArNotFull;
   assign sfifoArWe       = arready & arvalid;
-  assign sfifoArRe       = sfifoArNotEmpty & abtGrant[0] & transCompleted;
+  assign sfifoArRe       = sfifoArNotEmpty  & transCompleted & abtGrant[0];
   //X2P_SFIFO_RD
   sfifo #(.DATA_WIDTH(X2P_SFIFO_RD_DATA_WIDTH), .POINTER_WIDTH(POINTER_WIDTH)) rd_sfifo(
   .clk(aclk),
@@ -266,7 +266,7 @@ module x2p (// AXI protocol
   assign sfifoAwNotEmpty = ~sfifoAwEmpty;
   assign awready         = sfifoAwNotFull;
   assign sfifoAwWe       = awready & awvalid;
-  assign sfifoAwRe       = sfifoAwNotEmpty & abtGrant[1] & transCompleted;
+  assign sfifoAwRe       = sfifoAwNotEmpty & transCompleted & abtGrant[1];
   //X2P_SFIFO_WD
   sfifo #(.DATA_WIDTH(X2P_SFIFO_WD_DATA_WIDTH), .POINTER_WIDTH(POINTER_WIDTH)) wd_sfifo(
   .clk(aclk),
@@ -302,7 +302,7 @@ module x2p (// AXI protocol
   always_ff @(posedge aclk, negedge aresetn) begin
     if(~aresetn)
 	  bid[7:0] <= 8'd0;
-    else if(transCompleted && abtGrant[1] == 1'b1)
+    else if(transCompleted & abtGrant[1])
 	  bid[7:0] <= sfifoAwAwid[7:0];
 	else
 	  bid[7:0] <= 8'd0;
@@ -311,11 +311,12 @@ module x2p (// AXI protocol
   always_ff @(posedge aclk, negedge aresetn) begin
     if(~aresetn)
 	  bvalid <= 1'b0;
-	else if(transCompleted && abtGrant[1] == 1'b1)
+	else if(transCompleted & abtGrant[1])
 	  bvalid <= 1'b1;
 	else
 	  bvalid <= 1'b0;
   end
+  //checked to here
   //ARBITER
   //nextSel0
   always_comb begin
