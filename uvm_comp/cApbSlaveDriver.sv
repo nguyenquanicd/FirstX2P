@@ -9,7 +9,7 @@ class cApbSlaveDriver extends uvm_driver #(cApbTransaction);
   //3. Class constructor with two arguments
   // - A string "name"
   // - A class object with data type uvm_component
-  function new (string name, uvm_component parent);
+	function new (string name, uvm_component parent=null);
     //Call the function new of the base class "uvm_driver"
     super.new(name, parent);
   endfunction: new
