@@ -307,6 +307,7 @@ module x2p_core (// AXI protocol
 `endif
   logic											sel_reg;
   logic [31:0]                                  separate_wdata;
+  logic [DATA_WIDTH_APB-1:0]                    prdata_reg_out;
   //body
   //X2P_SFIFO_AR
   sfifo #(.DATA_WIDTH(X2P_SFIFO_AR_DATA_WIDTH), .POINTER_WIDTH(POINTER_WIDTH)) ar_sfifo (
@@ -1394,14 +1395,15 @@ module x2p_core (// AXI protocol
 	end
   endgenerate
   //prdata_apb
-  assign prdata_apb[DATA_WIDTH_APB-1:0] = prdata_out[SLAVE_NUM-1][DATA_WIDTH_APB-1:0] | psel_reg & prdata_reg[DATA_WIDTH_APB-1:0];
-  assign prdata_out[0] = psel[0] ? prdata[0] : 32'd0;
+  assign prdata_apb[DATA_WIDTH_APB-1:0] = prdata_out[SLAVE_NUM-1][DATA_WIDTH_APB-1:0] | prdata_reg_out[DATA_WIDTH_APB-1:0];
+  assign prdata_out[0] = psel[0] ? prdata[0] : {DATA_WIDTH_APB{1'b0}};
   generate
     genvar j;
 	for(j = 1; j <= SLAVE_NUM-1; j = j + 1) begin: decPrdata
 	  assign prdata_out[j] = psel[j] ? prdata[j] : prdata_out[j-1];
 	end
   endgenerate
+  assign prdata_reg_out[DATA_WIDTH_APB-1:0] = psel_reg ? prdata_reg[DATA_WIDTH_APB-1:0] : {DATA_WIDTH_APB{1'b0}};
   //transfer
   assign transfer = |sel[SLAVE_NUM-1:0] | select_reserve | sel_reg;
   //next_state circuit
@@ -1438,6 +1440,7 @@ module x2p_core (// AXI protocol
     if(~preset_n) begin
 	  psel[SLAVE_NUM-1:0] <= {SLAVE_NUM{1'b0}};
 	  psel_reg <= 1'b0;
+	  pselect_reserve <= 1'b0;
 	end
 	else begin
 	  case(current_state[1:0])
@@ -1445,24 +1448,29 @@ module x2p_core (// AXI protocol
 		  if(transfer) begin
 		    psel[SLAVE_NUM-1:0] <= sel[SLAVE_NUM-1:0];
 		    psel_reg <= sel_reg;
+			pselect_reserve <= select_reserve;
 		  end
 		  else begin
 		    psel[SLAVE_NUM-1:0] <= {SLAVE_NUM{1'b0}};
 		    psel_reg <= 1'b0;
+			pselect_reserve <= 1'b0;
 		  end
 		end
 	    SETUP:begin
 		  psel[SLAVE_NUM-1:0] <= psel[SLAVE_NUM-1:0];
 		  psel_reg <= psel_reg;
+		  pselect_reserve <= pselect_reserve;
 		end
 	    ACCESS:begin
 		  if(transaction_completed) begin
 		    psel[SLAVE_NUM-1:0] <= {SLAVE_NUM{1'b0}};
 		    psel_reg <= 1'b0;
+			pselect_reserve <= 1'b0;
 		  end
 		  else begin
 		    psel[SLAVE_NUM-1:0] <= psel[SLAVE_NUM-1:0];
 			psel_reg <= psel_reg;
+			pselect_reserve <= pselect_reserve;
 		  end
 		end
 	  endcase
