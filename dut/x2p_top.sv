@@ -160,8 +160,8 @@ module x2p_top(aclk,
 			   .pslverr_reg(pslverr_reg),
 			   .prdata_reg(prdata_reg)
                );
-  x2p_register register(.pclk(clk),
-                            .preset_n(rst),
+  x2p_register register(.pclk(pclk),
+                            .preset_n(preset_n),
 							.psel(psel_reg),
 							.penable(penable),
 							.pready(pready_reg),
