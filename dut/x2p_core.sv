@@ -1,5 +1,5 @@
 //===================================================================================
-// File name: X2P.sv
+// File name: x2p_core.sv
 // Project  : X2P
 // Function : IP core design of AXI to APB bridge
 // Author   : Pham Van Thang
@@ -67,7 +67,6 @@ module x2p_core (// AXI protocol
             );
   //iclude parameter file
   `include "x2p_parameter.h"
-
   //ports declaration
   //AXI protocol
   input logic                   				  aclk;
@@ -1639,11 +1638,11 @@ module x2p_core (// AXI protocol
     assign separate_wdata_32[31:0] = sfifo_wd_wdata[DATA_WIDTH_AXI-1:0]; 
   `endif
   `ifdef MODE64_32
-    always_comb begin
-	  if(~cnt_32)
-	    separate_wdata_64[31:0] = sfifo_wd_wdata[31:0];
-	  else
-	    separate_wdata_64[31:0] = sfifo_wd_wdata[DATA_WIDTH_AXI-1:32];
+	always_comb begin
+	  casez(cnt_32)
+	    1'b0: separate_wdata_64[31:0] = sfifo_wd_wdata[31:0];
+		1'b1: separate_wdata_64[31:0] = sfifo_wd_wdata[DATA_WIDTH_AXI-1:32];
+	  endcase
 	end
   `endif
   `ifdef MODE128_32
@@ -1800,11 +1799,11 @@ module x2p_core (// AXI protocol
   `ifdef MODE32_32
     assign wstrb_32[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[DATA_WIDTH_AXI/8-1:0];
   `elsif MODE64_32
-    always_comb begin
-	  if(~cnt_32)
-	    wstrb_64[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[3:0];
-	  else
-	    wstrb_64[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[DATA_WIDTH_AXI/8-1:4];
+	always_comb begin
+	  casez({cnt_32})
+	    1'b0: wstrb_64[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[3:0];
+		1'b1: wstrb_64[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[DATA_WIDTH_AXI/8-1:4];
+	  endcase
 	end
   `elsif MODE128_32
     always_comb begin
