@@ -202,7 +202,6 @@ module x2p_core (// AXI protocol
   logic [8:0]                                   bit9_addr;
   logic [9:0]                                   bit10_addr;
   logic [10:0]                                  bit11_addr;
-  logic [11:0]                                  bit12_addr;
   logic [SLAVE_NUM-1:0]                         pready_out;
   logic [SLAVE_NUM-1:0]                         pslverr_out;
   logic [SLAVE_NUM-1:0][DATA_WIDTH_APB-1:0]     prdata_out;
@@ -221,33 +220,35 @@ module x2p_core (// AXI protocol
 `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
   logic                                         cnt_32;
 `endif
+`ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
+  logic                                         cnt_64;
+`endif
+`ifdef MODE1024_32_MODE512_32_MODE256_32
+  logic                                         cnt_128;
+`endif
+`ifdef MODE1024_32_MODE512_32
+  logic                                         cnt_256;
+`endif
+`ifdef MODE1024_32
+  logic                                         cnt_512;
+`endif
 `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32_MODE32_32
   logic	                                        sfifo_wd_re_32;
   logic	                                        sfifo_rd_we_32;
-`endif
-`ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
-  logic                                         cnt_64;
 `endif
 `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
   logic	                                        sfifo_wd_re_64;
   logic	                                        sfifo_rd_we_64;
 `endif
-`ifdef MODE1024_32_MODE512_32_MODE256_32
-  logic                                         cnt_128;
-`endif
 `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
   logic	                                        sfifo_wd_re_128;
   logic	                                        sfifo_rd_we_128;
-`endif
-`ifdef MODE1024_32_MODE512_32
-  logic                                         cnt_256;
 `endif
 `ifdef MODE1024_32_MODE512_32_MODE256_32
   logic	                                        sfifo_wd_re_256;
   logic	                                        sfifo_rd_we_256;
 `endif
-`ifdef MODE1024_32
-  logic                                         cnt_512;
+`ifdef MODE1024_32_MODE512_32
   logic	                                        sfifo_wd_re_512;
   logic	                                        sfifo_rd_we_512;
 `endif
@@ -370,7 +371,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE64_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_64[31:0] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0))
 	  prdata_wrap_apb_64[31:0] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -386,7 +387,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE128_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_128[31:0] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0))
 	  prdata_wrap_apb_128[31:0] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -394,7 +395,7 @@ module x2p_core (// AXI protocol
  `endif
   `ifdef MODE128_32 
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_128[63:32] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0))
 	  prdata_wrap_apb_128[63:32] <= prdata_apb[31:0];
@@ -402,7 +403,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE128_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_128[95:64] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1))
 	  prdata_wrap_apb_128[95:64] <= prdata_apb[31:0];
@@ -418,7 +419,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE256_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_256[31:0] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0))
 	  prdata_wrap_apb_256[31:0] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -426,7 +427,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE256_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_256[63:32] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0))
 	  prdata_wrap_apb_256[63:32] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -434,7 +435,7 @@ module x2p_core (// AXI protocol
   `endif  
   `ifdef MODE256_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_256[95:64] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0))
 	  prdata_wrap_apb_256[95:64] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -442,7 +443,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE256_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_256[127:96] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0))
 	  prdata_wrap_apb_256[127:96] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -450,7 +451,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE256_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_256[159:128] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1))
 	  prdata_wrap_apb_256[159:128] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -458,7 +459,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE256_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_256[191:160] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1))
 	  prdata_wrap_apb_256[191:160] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -466,7 +467,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE256_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_256[223:192] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1))
 	  prdata_wrap_apb_256[223:192] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -482,7 +483,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[31:0] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0))
 	  prdata_wrap_apb_512[31:0] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -490,7 +491,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[63:32] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0))
 	  prdata_wrap_apb_512[63:32] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -498,7 +499,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[95:64] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0))
 	  prdata_wrap_apb_512[95:64] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -506,7 +507,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[127:96] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0))
 	  prdata_wrap_apb_512[127:96] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -514,7 +515,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[159:128] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0))
 	  prdata_wrap_apb_512[159:128] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -522,7 +523,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[191:160] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0))
 	  prdata_wrap_apb_512[191:160] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -530,7 +531,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[223:192] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0))
 	  prdata_wrap_apb_512[223:192] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -538,7 +539,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[255:224] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0))
 	  prdata_wrap_apb_512[255:224] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -546,7 +547,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[287:256] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1))
 	  prdata_wrap_apb_512[287:256] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -554,7 +555,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[319:288] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1))
 	  prdata_wrap_apb_512[319:288] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -562,7 +563,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[351:320] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1))
 	  prdata_wrap_apb_512[351:320] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -570,7 +571,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[383:352] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1))
 	  prdata_wrap_apb_512[383:352] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -578,7 +579,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[415:384] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1))
 	  prdata_wrap_apb_512[415:384] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -586,7 +587,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[447:416] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1))
 	  prdata_wrap_apb_512[447:416] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -594,7 +595,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_512[479:448] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1))
 	  prdata_wrap_apb_512[479:448] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -610,7 +611,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[31:0] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[31:0] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -618,7 +619,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[63:32] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[63:32] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -626,7 +627,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[95:64] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[95:64] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -634,7 +635,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[127:96] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[127:96] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -642,7 +643,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[159:128] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[159:128] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -650,7 +651,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[191:160] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[191:160] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -658,7 +659,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[223:192] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[223:192] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -666,7 +667,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[255:224] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[255:224] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -674,7 +675,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[287:256] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[287:256] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -682,15 +683,16 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[319:288] <= 32'd0;
-	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
+	else if(trans_cnt_en & abt_grant[0] & (cnt_32
+	== 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[319:288] <= prdata_apb[DATA_WIDTH_APB-1:0];
   end  
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[351:320] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[351:320] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -698,7 +700,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[383:352] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[383:352] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -706,7 +708,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[415:384] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[415:384] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -714,7 +716,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[447:416] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[447:416] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -722,7 +724,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[479:448] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[479:448] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -730,7 +732,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[511:480] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b0))
 	  prdata_wrap_apb_1024[511:480] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -738,7 +740,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[543:512] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[543:512] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -746,7 +748,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[575:544] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[575:544] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -754,7 +756,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[607:576] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[607:576] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -762,7 +764,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[639:608] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b0) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[639:608] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -770,7 +772,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[671:640] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[671:640] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -778,7 +780,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[703:672] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[703:672] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -786,7 +788,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[735:704] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[735:704] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -794,7 +796,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[767:736] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b0) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[767:736] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -802,7 +804,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[799:768] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[799:768] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -810,7 +812,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[831:800] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[831:800] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -818,7 +820,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[863:832] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[863:832] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -826,7 +828,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[895:864] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b0) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[895:864] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -834,7 +836,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[927:896] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[927:896] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -842,7 +844,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[959:928] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b0) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[959:928] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -850,7 +852,7 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  prdata_wrap_apb_1024[991:960] <= 32'd0;
 	else if(trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b0) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1))
 	  prdata_wrap_apb_1024[991:960] <= prdata_apb[DATA_WIDTH_APB-1:0];
@@ -876,7 +878,7 @@ module x2p_core (// AXI protocol
   end
   //rlast
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  rlast <= 1'b0;
 	else if(transaction_completed & abt_grant[0])
 	  rlast = 1'b1;
@@ -886,20 +888,15 @@ module x2p_core (// AXI protocol
   //transfer_en
   `ifdef MODE32_32
     assign transfer_en = transfer_en_32;
-  `endif
-  `ifdef MODE64_32
+  `elsif MODE64_32
     assign transfer_en = transfer_en_64;
-  `endif
-  `ifdef MODE128_32
+  `elsif MODE128_32
     assign transfer_en = transfer_en_128;
-  `endif
-  `ifdef MODE256_32
+  `elsif MODE256_32
     assign transfer_en = transfer_en_256;
-  `endif
-  `ifdef MODE512_32
+  `elsif MODE512_32
     assign transfer_en = transfer_en_512;
-  `endif
-  `ifdef MODE1024_32
+  `elsif MODE1024_32
     assign transfer_en = transfer_en_1024;
   `endif
   `ifdef MODE32_32
@@ -955,28 +952,20 @@ module x2p_core (// AXI protocol
   assign sfifo_wd_we        = wvalid & wready;
   `ifdef MODE32_32
     assign sfifo_wd_re = sfifo_wd_re_32;
-  `endif
-  `ifdef MODE64_32
+  `elsif MODE64_32
     assign sfifo_wd_re = sfifo_wd_re_64;
-  `endif
-  `ifdef MODE128_32
+  `elsif MODE128_32
     assign sfifo_wd_re = sfifo_wd_re_128;
-  `endif
-  `ifdef MODE256_32
+  `elsif MODE256_32
     assign sfifo_wd_re = sfifo_wd_re_256;
-  `endif
-  `ifdef MODE512_32
+  `elsif MODE512_32
     assign sfifo_wd_re = sfifo_wd_re_512;
-  `endif
-  `ifdef MODE1024_32
+  `elsif MODE1024_32
     assign sfifo_wd_re = sfifo_wd_re_1024;
   `endif
-  `ifdef MODE1024_32
-  assign sfifo_wd_re_512  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1);
-  assign sfifo_wd_re_1024 = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1);
-  `endif
   `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32_MODE32_32
-  assign sfifo_wd_re_32   = sfifo_wd_not_empty & abt_grant[1] & (current_state == SETUP);  
+//  assign sfifo_wd_re_32   = sfifo_wd_not_empty & abt_grant[1] & (current_state == SETUP);  
+  assign sfifo_wd_re_32   = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en | (sfifo_wd_not_empty & abt_grant[1] & (current_state == IDLE) & transfer);
   `endif
   `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
   assign sfifo_wd_re_64   = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1);
@@ -989,6 +978,9 @@ module x2p_core (// AXI protocol
   `endif
   `ifdef MODE1024_32_MODE512_32
   assign sfifo_wd_re_512  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1);
+  `endif
+  `ifdef MODE1024_32
+  assign sfifo_wd_re_1024 = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1);
   `endif
   //B_CH
   //bresp
@@ -1063,7 +1055,7 @@ module x2p_core (// AXI protocol
   //abt_grant
   assign update = (abt_grant[0] & sfifo_aw_not_empty & ~sfifo_ar_not_empty) | transaction_completed;
   always_ff @(posedge aclk, negedge aresetn) begin
-    if(~preset_n)
+    if(!preset_n)
 	  abt_grant[1:0] <= 2'b01;
 	else if(update)
 	  abt_grant[1:0] <= next_grant[1:0];  
@@ -1244,7 +1236,7 @@ module x2p_core (// AXI protocol
   //transaction_completed
   assign transaction_completed = ((transfer_counter[LEN_WIDTH-1:0] == select_len[LEN_WIDTH-1:0]) ? 1 : 0) & transfer_en;
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  transfer_counter[LEN_WIDTH-1:0] <= {LEN_WIDTH{1'b0}};
     else begin
       casez({transfer_en, transaction_completed})
@@ -1366,14 +1358,14 @@ module x2p_core (// AXI protocol
   end
   //current_state
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  current_state[1:0] <= IDLE;
 	else
 	  current_state[1:0] <= next_state[1:0];
   end
   //psel
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n) begin
+    if(!preset_n) begin
 	  psel[SLAVE_NUM-1:0] <= {SLAVE_NUM{1'b0}};
 	  psel_reg <= 1'b0;
 	  pselect_reserve <= 1'b0;
@@ -1414,7 +1406,7 @@ module x2p_core (// AXI protocol
   end
   //penable
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  penable <= 1'b0;
 	else begin
 	  case(current_state[1:0])
@@ -1426,7 +1418,7 @@ module x2p_core (// AXI protocol
   end
   //paddr
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  paddr[ADDR_WIDTH-1:0] <= {ADDR_WIDTH{1'b0}};
 	else begin
 	  case(current_state[1:0])
@@ -1574,13 +1566,12 @@ module x2p_core (// AXI protocol
 	  4'b1001: wrap_next_transaddr[ADDR_WIDTH-1:0] = {paddr[ADDR_WIDTH-1:9], bit9_addr[8:0]};
 	  4'b1010: wrap_next_transaddr[ADDR_WIDTH-1:0] = {paddr[ADDR_WIDTH-1:10], bit10_addr[9:0]};
 	  4'b1011: wrap_next_transaddr[ADDR_WIDTH-1:0] = {paddr[ADDR_WIDTH-1:11], bit11_addr[10:0]};
-	  4'b1100: wrap_next_transaddr[ADDR_WIDTH-1:0] = {paddr[ADDR_WIDTH-1:12], bit12_addr[11:0]};
 	  default wrap_next_transaddr[ADDR_WIDTH-1:0] = {ADDR_WIDTH{1'bx}};
 	endcase
   end
   //pwrite
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  pwrite <= 1'b0;
 	else begin
 	  case(current_state[1:0])
@@ -1599,7 +1590,7 @@ module x2p_core (// AXI protocol
   end
   //pwdata
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  pwdata[DATA_WIDTH_APB-1:0] <= {DATA_WIDTH_APB{1'b0}};
 	else begin
 	  case(current_state[1:0])
@@ -1741,7 +1732,7 @@ module x2p_core (// AXI protocol
   `endif
   //pprot
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  pprot[2:0] <= 3'd0;
 	else begin
 	  case(current_state[1:0])
@@ -1767,7 +1758,7 @@ module x2p_core (// AXI protocol
   end
   //pstrb
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  pstrb[DATA_WIDTH_APB/8-1:0] = {DATA_WIDTH_APB/8{1'b0}};
 	else begin
 	  casez(current_state[1:0])
@@ -1894,31 +1885,31 @@ module x2p_core (// AXI protocol
   `endif
   //cnt_32
   `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
-    always_ff @ (posedge pclk, negedge preset_n) begin
-      if(~preset_n)
-	    cnt_32 <= 1'b0;
-      else if(abt_grant[0]) begin
-	    casez({cnt_32, sfifo_rd_we_32})
-	      2'b01: cnt_32 <= 1'b1;
-		  2'b10: cnt_32 <= 1'b1;
-		  2'b11: cnt_32 <= 1'b0;
-		  2'b00: cnt_32 <= 1'b0;
-	    endcase
-	  end
-	  else begin
-	    casez({cnt_32, sfifo_wd_re_32})
-	      2'b01: cnt_32 <= 1'b1;
-	      2'b10: cnt_32 <= 1'b1;
-		  2'b11: cnt_32 <= 1'b0;
-		  2'b00: cnt_32 <= 1'b0;
-	    endcase
-      end
-    end
+  always_ff @(posedge pclk, negedge preset_n) begin
+    if(!preset_n)
+	  cnt_32 <= 1'b0;
+	else if(abt_grant[0]) begin
+	  casez({cnt_32, sfifo_rd_we_32})
+	    2'b01: cnt_32 <= 1'b1;
+		2'b10: cnt_32 <= 1'b1;
+		2'b11: cnt_32 <= 1'b0;
+		2'b00: cnt_32 <= 1'b0;
+	  endcase
+	end
+	else begin
+	  casez({cnt_32, sfifo_wd_re_32})
+	    2'b01: cnt_32 <= 1'b1;
+	    2'b10: cnt_32 <= 1'b1;
+	    2'b11: cnt_32 <= 1'b0;
+	    2'b00: cnt_32 <= 1'b0;
+	  endcase
+	end
+  end
   `endif
   //cnt_64
   `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  cnt_64 <= 1'b0;
 	else if(abt_grant[0]) begin
 	  casez({cnt_64, sfifo_rd_we_64})
@@ -1941,7 +1932,7 @@ module x2p_core (// AXI protocol
   //cnt_128
   `ifdef MODE1024_32_MODE512_32_MODE256_32
     always_ff @(posedge pclk, negedge preset_n) begin
-      if(~preset_n)
+      if(!preset_n)
 	    cnt_128 <= 1'b0;
 	  else if(abt_grant[0]) begin
 	    casez({cnt_128, sfifo_rd_we_128})
@@ -1964,7 +1955,7 @@ module x2p_core (// AXI protocol
   //cnt_256
   `ifdef MODE1024_32_MODE512_32
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  cnt_256 <= 1'b0;
 	else if(abt_grant[0]) begin
 	  casez({cnt_256, sfifo_rd_we_256})
@@ -1987,7 +1978,7 @@ module x2p_core (// AXI protocol
   `ifdef MODE1024_32
   //cnt_512
   always_ff @(posedge pclk, negedge preset_n) begin
-    if(~preset_n)
+    if(!preset_n)
 	  cnt_512 <= 1'b0;
 	else if(abt_grant[0]) begin
 	  casez({cnt_512, sfifo_rd_we_512})
