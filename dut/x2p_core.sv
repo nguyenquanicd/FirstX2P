@@ -213,8 +213,6 @@ module x2p_core (// AXI protocol
   logic 										transfer_en;
   logic [DATA_WIDTH_APB/8-1:0]                  wstrb_en;
 `ifdef MODE32_32
-  logic	                                        sfifo_wd_re_32;
-  logic	                                        sfifo_rd_we_32;
   logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_32;
   logic											transfer_en_32;
   logic [DATA_WIDTH_APB/8-1:0]                  wstrb_32;
@@ -222,32 +220,38 @@ module x2p_core (// AXI protocol
 `endif
 `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
   logic                                         cnt_32;
+`endif
+`ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32_MODE32_32
   logic	                                        sfifo_wd_re_32;
   logic	                                        sfifo_rd_we_32;
- `endif
- `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
+`endif
+`ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
   logic                                         cnt_64;
+`endif
+`ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
   logic	                                        sfifo_wd_re_64;
   logic	                                        sfifo_rd_we_64;
- `endif
- `ifdef MODE1024_32_MODE512_32_MODE256_32
+`endif
+`ifdef MODE1024_32_MODE512_32_MODE256_32
   logic                                         cnt_128;
+`endif
+`ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
   logic	                                        sfifo_wd_re_128;
   logic	                                        sfifo_rd_we_128;
- `endif
- `ifdef MODE1024_32_MODE512_32
+`endif
+`ifdef MODE1024_32_MODE512_32
   logic                                         cnt_256;
+`endif
+`ifdef MODE1024_32_MODE512_32_MODE256_32
   logic	                                        sfifo_wd_re_256;
   logic	                                        sfifo_rd_we_256;
- `endif
- `ifdef MODE1024_32
+`endif
+`ifdef MODE1024_32
   logic                                         cnt_512;
   logic	                                        sfifo_wd_re_512;
   logic	                                        sfifo_rd_we_512;
- `endif
+`endif
 `ifdef MODE64_32 
-  logic	                                        sfifo_wd_re_64;
-  logic	                                        sfifo_rd_we_64;
   logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_64;
   logic											transfer_en_64;
   logic [DATA_WIDTH_APB/8-1:0]                  wstrb_64;
@@ -258,28 +262,20 @@ module x2p_core (// AXI protocol
   logic											transfer_en_128;
   logic [DATA_WIDTH_APB/8-1:0]                  wstrb_128;
   logic [31:0]                                  separate_wdata_128;
-  logic	                                        sfifo_wd_re_128;
-  logic	                                        sfifo_rd_we_128;
 `endif
 `ifdef MODE256_32
-  logic	                                        sfifo_wd_re_256;
-  logic	                                        sfifo_rd_we_256;
   logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_256;
   logic											transfer_en_256;
   logic [DATA_WIDTH_APB/8-1:0]                  wstrb_256;
   logic [31:0]                                  separate_wdata_256;
 `endif
 `ifdef MODE512_32
-  logic	                                        sfifo_wd_re_512;
-  logic	                                        sfifo_rd_we_512;
   logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_512;
   logic											transfer_en_512;
   logic [DATA_WIDTH_APB/8-1:0]                  wstrb_512;
   logic [31:0]                                  separate_wdata_512;
 `endif
 `ifdef MODE1024_32
-  logic	                                        sfifo_wd_re_1024;
-  logic	                                        sfifo_rd_we_1024;
   logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_1024;
   logic											transfer_en_1024;
   logic [DATA_WIDTH_APB/8-1:0]                  wstrb_1024;
@@ -1916,7 +1912,7 @@ module x2p_core (// AXI protocol
 		  2'b11: cnt_32 <= 1'b0;
 		  2'b00: cnt_32 <= 1'b0;
 	    endcase
-	  end
+      end
     end
   `endif
   //cnt_64
