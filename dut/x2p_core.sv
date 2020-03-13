@@ -326,72 +326,47 @@ module x2p_core (// AXI protocol
   //sfifo_rd_we
   `ifdef MODE32_32
     assign sfifo_rd_we = sfifo_rd_we_32;
-  `endif
-  `ifdef MODE64_32
+  `elsif MODE64_32
     assign sfifo_rd_we = sfifo_rd_we_64;
-  `endif
-  `ifdef MODE128_32
+  `elsif MODE128_32
     assign sfifo_rd_we = sfifo_rd_we_128;
-  `endif
-  `ifdef MODE256_32
+  `elsif MODE256_32
     assign sfifo_rd_we = sfifo_rd_we_256;
-  `endif
-  `ifdef MODE512_32
+  `elsif MODE512_32
     assign sfifo_rd_we = sfifo_rd_we_512;
-  `endif
-  `ifdef MODE1024_32
+  `elsif MODE1024_32
     assign sfifo_rd_we = sfifo_rd_we_1024;
   `endif
-  `ifdef MODE32_32
+  `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32_MODE32_32;
   assign sfifo_rd_we_32   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0];
   `endif
-  `ifdef MODE64_32
-  assign sfifo_rd_we_32   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0];
+  `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
   assign sfifo_rd_we_64   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1);  
   `endif
-  `ifdef MODE128_32
-  assign sfifo_rd_we_32   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0];
-  assign sfifo_rd_we_64   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1);
+  `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
   assign sfifo_rd_we_128  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1);
   `endif
-  `ifdef MODE256_32
-  assign sfifo_rd_we_32   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0];
-  assign sfifo_rd_we_64   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1);
-  assign sfifo_rd_we_128  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1);
+  `ifdef MODE1024_32_MODE512_32_MODE256_32
   assign sfifo_rd_we_256  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1);
   `endif
-  `ifdef MODE512_32
-  assign sfifo_rd_we_32   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0];
-  assign sfifo_rd_we_64   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1);
-  assign sfifo_rd_we_128  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1);
-  assign sfifo_rd_we_256  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1);
+  `ifdef MODE1024_32_MODE512_32
   assign sfifo_rd_we_512  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1);
   `endif
   `ifdef MODE1024_32
-  assign sfifo_rd_we_32   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0];
-  assign sfifo_rd_we_64   = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1);
-  assign sfifo_rd_we_128  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1);
-  assign sfifo_rd_we_256  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1);
-  assign sfifo_rd_we_512  = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1);
   assign sfifo_rd_we_1024 = sfifo_rd_not_full & trans_cnt_en & abt_grant[0] & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1);
   `endif
   //prdata_wrap_apb
   `ifdef MODE32_32
   assign prdata_wrap_apb[DATA_WIDTH_AXI-1:0]     = prdata_wrap_apb_32[DATA_WIDTH_AXI-1:0];
-  `endif
-  `ifdef MODE64_32
+  `elsif MODE64_32
   assign prdata_wrap_apb[DATA_WIDTH_AXI-1:0]     = prdata_wrap_apb_64[DATA_WIDTH_AXI-1:0];
-  `endif
-  `ifdef MODE128_32
+  `elsif MODE128_32
   assign prdata_wrap_apb[DATA_WIDTH_AXI-1:0]     = prdata_wrap_apb_128[DATA_WIDTH_AXI-1:0];
-  `endif
-  `ifdef MODE256_32
+  `elsif MODE256_32
   assign prdata_wrap_apb[DATA_WIDTH_AXI-1:0]     = prdata_wrap_apb_256[DATA_WIDTH_AXI-1:0];
-  `endif
-  `ifdef MODE512_32
+  `elsif MODE512_32
   assign prdata_wrap_apb[DATA_WIDTH_AXI-1:0]     = prdata_wrap_apb_512[DATA_WIDTH_AXI-1:0];
-  `endif
-  `ifdef MODE1024_32
+  `elsif MODE1024_32
   assign prdata_wrap_apb[DATA_WIDTH_AXI-1:0]     = prdata_wrap_apb_1024[DATA_WIDTH_AXI-1:0];
   `endif
   `ifdef MODE32_32
@@ -1000,38 +975,23 @@ module x2p_core (// AXI protocol
   `ifdef MODE1024_32
     assign sfifo_wd_re = sfifo_wd_re_1024;
   `endif
-  `ifdef MODE32_32
-  assign sfifo_wd_re_32   = sfifo_wd_not_empty & abt_grant[1] & (current_state == SETUP);
-  `endif
-  `ifdef MODE64_32
-  assign sfifo_wd_re_64   = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1);
-  `endif
-  `ifdef MODE128_32
-  assign sfifo_wd_re_128  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1);
-  `endif
-  `ifdef MODE256_32
-  assign sfifo_wd_re_256  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1);
-  `endif
-  `ifdef MODE512_32
-  assign sfifo_wd_re_512  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1);
-  `endif
   `ifdef MODE1024_32
   assign sfifo_wd_re_512  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1);
   assign sfifo_wd_re_1024 = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1) & (cnt_512 == 1'b1);
   `endif
-  `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
+  `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32_MODE32_32
   assign sfifo_wd_re_32   = sfifo_wd_not_empty & abt_grant[1] & (current_state == SETUP);  
   `endif
-  `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
+  `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
   assign sfifo_wd_re_64   = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1);
   `endif
-  `ifdef MODE1024_32_MODE512_32_MODE256_32
+  `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32
   assign sfifo_wd_re_128  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1);
   `endif
-  `ifdef MODE1024_32_MODE512_32
+  `ifdef MODE1024_32_MODE512_32_MODE256_32
   assign sfifo_wd_re_256  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1);
   `endif
-  `ifdef MODE1024_32
+  `ifdef MODE1024_32_MODE512_32
   assign sfifo_wd_re_512  = sfifo_wd_not_empty & abt_grant[1] & trans_cnt_en & (cnt_32 == 1'b1) & (cnt_64 == 1'b1) & (cnt_128 == 1'b1) & (cnt_256 == 1'b1);
   `endif
   //B_CH
@@ -1839,34 +1799,27 @@ module x2p_core (// AXI protocol
   end
   `ifdef MODE32_32
     assign wstrb_en[DATA_WIDTH_APB/8-1:0] = wstrb_32[DATA_WIDTH_APB/8-1:0];
-  `endif
-  `ifdef MODE64_32
+  `elsif MODE64_32
     assign wstrb_en[DATA_WIDTH_APB/8-1:0] = wstrb_64[DATA_WIDTH_APB/8-1:0];
-  `endif
-  `ifdef MODE128_32
+  `elsif MODE128_32
     assign wstrb_en[DATA_WIDTH_APB/8-1:0] = wstrb_128[DATA_WIDTH_APB/8-1:0];
-  `endif
-  `ifdef MODE256_32
+  `elsif MODE256_32
     assign wstrb_en[DATA_WIDTH_APB/8-1:0] = wstrb_256[DATA_WIDTH_APB/8-1:0];
-  `endif
-  `ifdef MODE512_32
+  `elsif MODE512_32
     assign wstrb_en[DATA_WIDTH_APB/8-1:0] = wstrb_512[DATA_WIDTH_APB/8-1:0];
-  `endif
-  `ifdef MODE1024_32
+  `elsif MODE1024_32
     assign wstrb_en[DATA_WIDTH_APB/8-1:0] = wstrb_1024[DATA_WIDTH_APB/8-1:0];
   `endif
   `ifdef MODE32_32
     assign wstrb_32[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[DATA_WIDTH_AXI/8-1:0];
-  `endif
-  `ifdef MODE64_32
+  `elsif MODE64_32
     always_comb begin
 	  if(~cnt_32)
 	    wstrb_64[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[3:0];
 	  else
 	    wstrb_64[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[DATA_WIDTH_AXI/8-1:4];
 	end
-  `endif
-  `ifdef MODE128_32
+  `elsif MODE128_32
     always_comb begin
       casez({cnt_64, cnt_32})
 	    2'b00: wstrb_128[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[3:0];
@@ -1874,8 +1827,7 @@ module x2p_core (// AXI protocol
 	    2'b10: wstrb_128[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[11:8];
 	    2'b11: wstrb_128[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[DATA_WIDTH_AXI/8-1:12];
 	  endcase
-  `endif
-  `ifdef MODE256_32
+  `elsif MODE256_32
     always_comb begin
       casez({cnt_128, cnt_64, cnt_32})
 	    3'b000: wstrb_256[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[3:0];
@@ -1887,8 +1839,7 @@ module x2p_core (// AXI protocol
 	    3'b110: wstrb_256[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[27:24];
 	    3'b111: wstrb_256[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[DATA_WIDTH_AXI/8-1:28];
 	  endcase
-  `endif
-  `ifdef MODE512_32
+  `elsif MODE512_32
     always_comb begin
       casez({cnt_256, cnt_128, cnt_64, cnt_32})
 	    4'b0000: wstrb_512[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[3:0];
@@ -1908,8 +1859,7 @@ module x2p_core (// AXI protocol
 	    4'b1110: wstrb_512[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[59:56];
 	    4'b1111: wstrb_512[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[DATA_WIDTH_AXI/8-1:60];
 	  endcase
-  `endif
-  `ifdef MODE1024_32
+  `elsif MODE1024_32
     always_comb begin
       casez({cnt_512, cnt_256, cnt_128, cnt_64, cnt_32})
 	    5'b00000: wstrb_1024[DATA_WIDTH_APB/8-1:0] = sfifo_wd_wstrb[3:0];
@@ -1962,7 +1912,7 @@ module x2p_core (// AXI protocol
 	  else begin
 	    casez({cnt_32, sfifo_wd_re_32})
 	      2'b01: cnt_32 <= 1'b1;
-		  2'b10: cnt_32 <= 1'b1;
+	      2'b10: cnt_32 <= 1'b1;
 		  2'b11: cnt_32 <= 1'b0;
 		  2'b00: cnt_32 <= 1'b0;
 	    endcase
