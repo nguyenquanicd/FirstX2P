@@ -520,7 +520,7 @@ module x2p_core (// AXI protocol
   //selectLen
   assign selectLen[7:0] = abtGrant[0] ?  sfifoArCtrlArlen[7:0] : sfifoAwCtrlAwlen[7:0];
   //transCompleted
-  assign transCompleted = (transferCounter[7:0] == selectLen[7:0] + 1'b1) ? 1 : 0;
+  assign transCompleted = (transferCounter[7:0] == selectLen[7:0] + 1'b1) ? 1'b1 : 1'b0;
   always_ff @(posedge pclk, negedge preset_n) begin
     if(~preset_n)
 	  transferCounter[7:0] <= 8'd0;
@@ -669,6 +669,7 @@ module x2p_core (// AXI protocol
 		else
 		  nextState[1:0] = IDLE;
 	  end
+	  default nextState[1:0] = IDLE;
 	endcase
   end
   //currentState
@@ -760,6 +761,7 @@ module x2p_core (// AXI protocol
 	  8'd3:  bitNum[2:0] = 3'b100;
 	  8'd7:  bitNum[2:0] = 3'b101;
 	  8'd15: bitNum[2:0] = 3'b110;
+	  default bitNum[2:0] = 3'bx;
 	endcase
   end
   //bit3Addr, bit4Addr, bit5Addr, bit6Addr
@@ -793,7 +795,8 @@ module x2p_core (// AXI protocol
 	  3'b011: wrapNextTransAddr[31:0] = {paddr[31:3], bit3Addr[2:0]};
 	  3'b100: wrapNextTransAddr[31:0] = {paddr[31:4], bit4Addr[3:0]};
 	  3'b101: wrapNextTransAddr[31:0] = {paddr[31:5], bit5Addr[4:0]};
-	  3'b100: wrapNextTransAddr[31:0] = {paddr[31:6], bit6Addr[5:0]};
+	  3'b110: wrapNextTransAddr[31:0] = {paddr[31:6], bit6Addr[5:0]};
+	  default wrapNextTransAddr[31:0] = 32'bx;
 	endcase
   end
   //pwrite
