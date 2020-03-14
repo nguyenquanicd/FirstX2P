@@ -210,12 +210,6 @@ module x2p_core (// AXI protocol
   logic [DATA_WIDTH_AXI-1:0]                    prdata_wrap_apb;
   logic 										transfer_en;
   logic [DATA_WIDTH_APB/8-1:0]                  wstrb_en;
-`ifdef MODE32_32
-  logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_32;
-  logic											transfer_en_32;
-  logic [DATA_WIDTH_APB/8-1:0]                  wstrb_32;
-  logic [31:0]                                  separate_wdata_32;
-`endif
 `ifdef MODE1024_32_MODE512_32_MODE256_32_MODE128_32_MODE64_32
   logic                                         cnt_32;
 `endif
@@ -250,6 +244,12 @@ module x2p_core (// AXI protocol
 `ifdef MODE1024_32_MODE512_32
   logic	                                        sfifo_wd_re_512;
   logic	                                        sfifo_rd_we_512;
+`endif
+`ifdef MODE32_32
+  logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_32;
+  logic											transfer_en_32;
+  logic [DATA_WIDTH_APB/8-1:0]                  wstrb_32;
+  logic [31:0]                                  separate_wdata_32;
 `endif
 `ifdef MODE64_32 
   logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_64;
