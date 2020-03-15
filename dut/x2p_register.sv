@@ -44,7 +44,6 @@ module x2p_register(pclk,
 	  prdata[31:0] <= x2pRegPrdata[31:0];	  
   end
   //prdata  
-  //generate
   always_comb begin
     if(SLAVE_NUM == 1) begin
 	  case(paddr[7:0])
@@ -1264,8 +1263,7 @@ module x2p_register(pclk,
 	end
 	else
 	  x2pRegPrdata[31:0] = 32'd0;
-  end
-  //endgenerate
+  end 
   //pready
   assign pready = 1'b1;
   //pslverr

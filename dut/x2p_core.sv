@@ -206,6 +206,7 @@ module x2p_core (// AXI protocol
   logic                           selRes;
   logic                           transEn;
   logic                           pselRes;
+  logic [31:0]                    prdataRegOut;
   //body
   //X2P_SFIFO_AR
   sfifo #(.DATA_WIDTH(X2P_SFIFO_AR_DATA_WIDTH), .POINTER_WIDTH(POINTER_WIDTH)) ar_sfifo (
@@ -611,7 +612,8 @@ module x2p_core (// AXI protocol
 	end
   endgenerate
   //prdataX
-  assign prdataX = prdataOut[SLAVE_NUM-1] | pselReg & prdataReg;
+  assign prdataRegOut = pselReg ? prdataReg : 32'd0;
+  assign prdataX = prdataOut[SLAVE_NUM-1] | prdataRegOut;
   assign prdataOut[0] = psel[0] ? prdata[0] : 32'd0;
   generate
     genvar j;
@@ -748,7 +750,7 @@ module x2p_core (// AXI protocol
 	else if(transCompleted)
 	  fsmCal <= 1'b0;
 	else
-	  fsmCal <= |psel[SLAVE_NUM-1:0];
+	  fsmCal <= |psel[SLAVE_NUM-1:0] | pselReg;
   end
   //incrNextTransAddr
   assign incrNextTransAddr[31:0] = paddr[31:0] + 32'd4;
