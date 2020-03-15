@@ -44,1227 +44,297 @@ module x2p_register(pclk,
 	  prdata[DATA_WIDTH_APB-1:0] <= x2p_reg_prdata[DATA_WIDTH_APB-1:0];	  
   end
   //prdata  
-  //generate
-  always_comb begin
+  generate
     if(SLAVE_NUM == 1) begin
-	  case(paddr[7:0])
-		8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
-	  endcase
+	  always_comb begin
+	    case(paddr[7:0])
+		  8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
+		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
+		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
+	    endcase
+	  end
 	end
-	else if(SLAVE_NUM == 2) begin
-	  case(paddr[7:0])
-		8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
-	  endcase
+	if(SLAVE_NUM == 2) begin
+	  always_comb begin
+	    case(paddr[7:0])
+		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
+		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
+		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
+	    endcase
+	  end
 	end
-	else if(SLAVE_NUM == 3) begin
-	  case(paddr[7:0])
-		8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
-      endcase
+	if(SLAVE_NUM == 3) begin
+	  always_comb begin
+	    case(paddr[7:0])
+		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
+		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
+		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
+        endcase
+	  end
 	end	
-	else if(SLAVE_NUM == 4) begin
+	if(SLAVE_NUM == 4) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
 		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
 		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 5) begin: REG4
+    if(SLAVE_NUM == 5) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
 		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
 		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
-	end
-    else if(SLAVE_NUM == 6) begin: REG5
+	  end
+	end	
+    if(SLAVE_NUM == 6) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
 		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
 		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 7) begin: REG6
+    if(SLAVE_NUM == 7) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
 		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
 		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 8) begin: REG7
+    if(SLAVE_NUM == 8) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
 		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
 		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
-	end	
-	else if(SLAVE_NUM == 9) begin: REG8
+	  end
+	end
+    if(SLAVE_NUM == 9) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
 		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
 		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 10) begin: REG9
+    if(SLAVE_NUM == 10) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
 		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
 		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-    else if(SLAVE_NUM == 11) begin: REG10
+    if(SLAVE_NUM == 11) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
 		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
 		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 12) begin: REG11
+    if(SLAVE_NUM == 12) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
 		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
 		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 13) begin: REG12
+    if(SLAVE_NUM == 13) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
 		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
 		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
-	end	
-	else if(SLAVE_NUM == 14) begin: REG13
+	  end
+	end
+    if(SLAVE_NUM == 14) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
 		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
 		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 15) begin: REG14
+    if(SLAVE_NUM == 15) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
 		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
 		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
-		endcase
+	    endcase
+	  end
 	end
-    else if(SLAVE_NUM == 16) begin: REG15
+	if(SLAVE_NUM == 16) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
 		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
 		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
-		endcase
+	    endcase
+	  end
 	end
-	else if(SLAVE_NUM == 17) begin: REG16
+	if(SLAVE_NUM == 17) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
 		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
 		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
-		endcase
-	end
-	else if(SLAVE_NUM == 18) begin: REG17
+        endcase
+	  end
+	end	
+	if(SLAVE_NUM == 18) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
 		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
 		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
-	end	
-	else if(SLAVE_NUM == 19) begin: REG18
+	  end
+	end
+    if(SLAVE_NUM == 19) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
 		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
 		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
-	end
-	else if(SLAVE_NUM == 20) begin: REG19
+	  end
+	end	
+    if(SLAVE_NUM == 20) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
 		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
 		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-    else if(SLAVE_NUM == 21) begin: REG20
+    if(SLAVE_NUM == 21) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
 		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
 		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 22) begin: REG21
+    if(SLAVE_NUM == 22) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
 		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
 		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 23) begin: REG22
+    if(SLAVE_NUM == 23) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
 		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
 		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
-	end	
-	else if(SLAVE_NUM == 24) begin: REG23
+	  end
+	end
+    if(SLAVE_NUM == 24) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
 		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
 		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 25) begin: REG24
+    if(SLAVE_NUM == 25) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
-		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
-		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
 		  8'hC0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE24;
 		  8'hC4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE24;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-    else if(SLAVE_NUM == 26) begin: REG25
+    if(SLAVE_NUM == 26) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
-		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
-		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
-		  8'hC0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE24;
-		  8'hC4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE24;
 		  8'hC8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE25;
 		  8'hCC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE25;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 27) begin: REG26
+    if(SLAVE_NUM == 27) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
-		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
-		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
-		  8'hC0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE24;
-		  8'hC4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE24;
-		  8'hC8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE25;
-		  8'hCC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE25;
 		  8'hD0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE26;
 		  8'hD4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE26;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 28) begin: REG27
+    if(SLAVE_NUM == 28) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
-		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
-		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
-		  8'hC0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE24;
-		  8'hC4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE24;
-		  8'hC8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE25;
-		  8'hCC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE25;
-		  8'hD0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE26;
-		  8'hD4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE26;
 		  8'hD8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE27;
 		  8'hDC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE27;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
-	end	
-	else if(SLAVE_NUM == 29) begin: REG28
+	  end
+	end
+    if(SLAVE_NUM == 29) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
-		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
-		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
-		  8'hC0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE24;
-		  8'hC4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE24;
-		  8'hC8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE25;
-		  8'hCC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE25;
-		  8'hD0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE26;
-		  8'hD4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE26;
-		  8'hD8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE27;
-		  8'hDC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE27;
 		  8'hE0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE28;
 		  8'hE4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE28;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 30) begin: REG29
+    if(SLAVE_NUM == 30) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
-		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
-		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
-		  8'hC0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE24;
-		  8'hC4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE24;
-		  8'hC8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE25;
-		  8'hCC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE25;
-		  8'hD0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE26;
-		  8'hD4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE26;
-		  8'hD8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE27;
-		  8'hDC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE27;
-		  8'hE0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE28;
-		  8'hE4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE28;
 		  8'hE8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE29;
 		  8'hEC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE29;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-    else if(SLAVE_NUM == DATA_WIDTH_APB-1) begin: REG30
+    if(SLAVE_NUM == 31) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
-		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
-		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
-		  8'hC0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE24;
-		  8'hC4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE24;
-		  8'hC8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE25;
-		  8'hCC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE25;
-		  8'hD0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE26;
-		  8'hD4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE26;
-		  8'hD8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE27;
-		  8'hDC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE27;
-		  8'hE0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE28;
-		  8'hE4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE28;
-		  8'hE8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE29;
-		  8'hEC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE29;
 		  8'hF0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE30;
 		  8'hF4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE30;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else if(SLAVE_NUM == 32) begin: REG31
+    if(SLAVE_NUM == 32) begin
+	  always_comb begin
 	    case(paddr[7:0])
-          8'h00: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE0;
-		  8'h04: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE0;
-		  8'h08: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE1;
-		  8'h0C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE1;
-		  8'h10: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE2;
-		  8'h14: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE2;
-		  8'h18: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE3;
-		  8'h1C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE3;
-		  8'h20: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE4;
-		  8'h24: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE4;
-		  8'h28: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE5;
-		  8'h2C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE5;
-		  8'h30: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE6;
-		  8'h34: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE6;
-		  8'h38: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE7;
-		  8'h3C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE7;
-		  8'h40: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE8;
-		  8'h44: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE8;
-		  8'h48: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE9;
-		  8'h4C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE9;
-		  8'h50: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE10;
-		  8'h54: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE10;
-		  8'h58: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE11;
-		  8'h5C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE11;
-		  8'h60: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE12;
-		  8'h64: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE12;
-		  8'h68: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE13;
-		  8'h6C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE13;
-		  8'h70: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE14;
-		  8'h74: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE14;
-		  8'h78: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE15;
-		  8'h7C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE15;
-		  8'h80: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE16;
-		  8'h84: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE16;
-		  8'h88: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE17;
-		  8'h8C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE17;
-		  8'h90: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE18;
-		  8'h94: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE18;
-		  8'h98: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE19;
-		  8'h9C: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE19;
-		  8'hA0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE20;
-		  8'hA4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE20;
-		  8'hA8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE21;
-		  8'hAC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE21;
-		  8'hB0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE22;
-		  8'hB4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE22;
-		  8'hB8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE23;
-		  8'hBC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE23;
-		  8'hC0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE24;
-		  8'hC4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE24;
-		  8'hC8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE25;
-		  8'hCC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE25;
-		  8'hD0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE26;
-		  8'hD4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE26;
-		  8'hD8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE27;
-		  8'hDC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE27;
-		  8'hE0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE28;
-		  8'hE4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE28;
-		  8'hE8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE29;
-		  8'hEC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE29;
-		  8'hF0: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE30;
-		  8'hF4: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE30;
 		  8'hF8: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_START_SLAVE31;
 		  8'hFC: x2p_reg_prdata[DATA_WIDTH_APB-1:0] = A_END_SLAVE31;
 		  default x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
 		endcase
+	  end
 	end
-	else
-	  x2p_reg_prdata[DATA_WIDTH_APB-1:0] = 32'd0;
-  end  //pready
+  endgenerate 
+  //pready
   assign pready = 1'b1;
   //pslverr
   always_ff @(posedge pclk, negedge preset_n) begin
