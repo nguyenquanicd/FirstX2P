@@ -245,6 +245,10 @@ module x2p_core (// AXI protocol
   logic	                                        sfifo_wd_re_512;
   logic	                                        sfifo_rd_we_512;
 `endif
+`ifdef MODE1024_32
+  logic	                                        sfifo_wd_re_1024;
+  logic	                                        sfifo_rd_we_1024;
+`endif
 `ifdef MODE32_32
   logic [DATA_WIDTH_AXI-1:0]					prdata_wrap_apb_32;
   logic											transfer_en_32;
@@ -1337,7 +1341,7 @@ module x2p_core (// AXI protocol
   endgenerate
   assign prdata_reg_out[DATA_WIDTH_APB-1:0] = psel_reg ? prdata_reg[DATA_WIDTH_APB-1:0] : {DATA_WIDTH_APB{1'b0}};
   //transfer
-  assign transfer = |sel[SLAVE_NUM-1:0] | select_reserve | sel_reg;
+  assign transfer = sfifo_ar_not_empty | sfifo_aw_not_empty;
   //next_state circuit
   always_comb begin
     case(current_state[1:0])
@@ -1428,10 +1432,10 @@ module x2p_core (// AXI protocol
 	else begin
 	  case(current_state[1:0])
 	    IDLE: begin
-		  if(~transfer)
-		    paddr[ADDR_WIDTH-1:0] <= {ADDR_WIDTH{1'b0}};
+		  if(transfer)
+			paddr[ADDR_WIDTH-1:0] <= start_addr[ADDR_WIDTH-1:0];
 		  else
-		    paddr[ADDR_WIDTH-1:0] <= start_addr[ADDR_WIDTH-1:0];
+		    paddr[ADDR_WIDTH-1:0] <= {ADDR_WIDTH{1'b0}};
 		end
 		SETUP: begin
 		  paddr[ADDR_WIDTH-1:0] <= paddr[ADDR_WIDTH-1:0];
@@ -1589,7 +1593,12 @@ module x2p_core (// AXI protocol
 		    pwrite <= 1'b0;
 		end
 		SETUP: pwrite <= pwrite;
-		ACCESS: pwrite <= pwrite;
+		ACCESS: begin
+		  if(transaction_completed)
+		    pwrite <= 1'b0;
+		  else
+		    pwrite <= pwrite;
+		end
 	  endcase
 	end
   end
@@ -1654,7 +1663,7 @@ module x2p_core (// AXI protocol
   `ifdef MODE128_32
     always_comb begin
       casez({cnt_64, cnt_32})
-	     2'b00: separate_wdata_128[31:0] = sfifo_wd_wdata[31:0];
+	      2'b00: separate_wdata_128[31:0] = sfifo_wd_wdata[31:0];
 		  2'b01: separate_wdata_128[31:0] = sfifo_wd_wdata[63:32];
 		  2'b10: separate_wdata_128[31:0] = sfifo_wd_wdata[95:64];
 		  2'b11: separate_wdata_128[31:0] = sfifo_wd_wdata[DATA_WIDTH_AXI-1:96];
@@ -1742,12 +1751,13 @@ module x2p_core (// AXI protocol
 	else begin
 	  case(current_state[1:0])
 	    IDLE: begin
-		  if(~transfer)
-		    pprot[2:0] <= 3'd0;
-		  else if(abt_grant[0])
-		    pprot[2:0] <= sfifo_ar_ctrl_arprot[2:0];
+		  if(transfer)
+		    if(abt_grant[0])
+		      pprot[2:0] <= sfifo_ar_ctrl_arprot[2:0];
+		    else
+		      pprot[2:0] <= sfifo_aw_ctrl_awprot[2:0];
 		  else
-		    pprot[2:0] <= sfifo_aw_ctrl_awprot[2:0];
+		    pprot[2:0] <= 3'd0;
 		end
 	    SETUP: begin
 		  pprot[2:0] <= pprot[2:0];

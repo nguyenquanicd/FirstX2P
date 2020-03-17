@@ -63,8 +63,8 @@ module tb;
     rst     = 1;
     #20 rst = 0;
     #50 rst = 1;
-//	#2000 rst = 0;
-//	#200 rst = 1;
+	#3000 rst = 0;
+	#200 rst = 1;
   end
 
   
@@ -123,129 +123,75 @@ module tb;
   initial begin
     #100;
     @(posedge clk);
-    arvalid = 1'b1; araddr = 32'h0000_0000; arsize = 3'b010; arlen = 8'h05; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
-    $display("================================================================================");
-    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
-
+    arvalid = 1'b1; araddr = 32'h0000_2000; arsize = 3'b011; arlen = 8'h05; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
     @(posedge clk);
-    arvalid = 1'b1; araddr = 32'h0000_3000; arsize = 3'b010; arlen = 8'h03; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
-    $display("================================================================================");
-    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
-    @(posedge clk);
-    arvalid = 1'b1; araddr = 32'h0000_2000; arsize = 3'b010; arlen = 8'h04; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
+    arvalid = 1'b1; araddr = 32'h0000_3000; arsize = 3'b011; arlen = 8'h02; arburst = 2'b01; arid = 8'd100; arprot = 3'b000;
 	@(posedge clk)
     while(arready != 1) @(posedge clk);
 	arvalid = 1'b0; araddr = 32'd0; arsize = 3'b000; arlen = 8'd0; arburst = 2'b00; arid = 8'd0; arprot = 3'b000;
-	
 	#3500;
 	@(posedge clk);
     arvalid = 1'b1; araddr = 32'h0000_1000; arsize = 3'b010; arlen = 8'h04; arburst = 2'b01; arid = 8'd200; arprot = 3'b000;
-    $display("================================================================================");
-    $display("At time [%0t] AXI master is sending an address_read %0d", $stime, araddr);
 	@(posedge clk)
     while(arready != 1) @(posedge clk);
-    //#1;
     arvalid = 1'b0; araddr = 32'd0; arsize = 3'b000; arlen = 8'd0; arburst = 2'b00; arid = 8'd0; arprot = 3'b000;
-    $display("At time [%0t] AXI master has send address_read completely", $stime);
-    $display("================================================================================");
   end
   
   initial begin
     rready = 1'b0;
     #1000;
     @(posedge clk);
-	//#1;
 	rready = 1'b1;
   end
 
  initial begin
     #100;
     @(posedge clk);
-      //#1;
       awvalid = 1'b1; awaddr = 32'h0000_2000; awsize = 3'b011; awlen = 8'd3; awburst = 2'b10; awid = 8'd200; awprot = 3'b000;
-      $display("================================================================================");
-      $display("At time [%0d], AXI master is sending an address = %h", $stime, awaddr);
-    @(posedge clk);
-      //#1;
-      awvalid = 1'b1; awaddr = 32'h0000_1000; awsize = 3'b010; awlen = 8'd3; awburst = 2'b10; awid = 8'd200; awprot = 3'b000;
-      $display("================================================================================");
-      $display("At time [%0d], AXI master is sending an address = %h", $stime, awaddr);
-    @(posedge clk);
-      //#1;
-      awvalid = 1'b1; awaddr = 32'h0000_3000; awsize = 3'b010; awlen = 8'd3; awburst = 2'b10; awid = 8'd200; awprot = 3'b000;
-      $display("================================================================================");
-      $display("At time [%0d], AXI master is sending an address = %h", $stime, awaddr);
     @(posedge clk);
       while(awready != 1) @(posedge clk);
-      //#1;
       awvalid = 1'b0; awaddr = 32'd0; awsize = 3'b000; awlen = 8'd0;  awburst = 2'b00; awid = 8'd0; awprot = 3'b000;
-      $display("At time [%0d], AXI master sent address completely", $stime);
-      $display("================================================================================");
+	#5000;
+	@(posedge clk);
+      awvalid = 1'b1; awaddr = 32'h0000_3000; awsize = 3'b010; awlen = 8'd3; awburst = 2'b10; awid = 8'd200; awprot = 3'b000;
+    @(posedge clk);
+      while(awready != 1) @(posedge clk);
+      awvalid = 1'b0; awaddr = 32'd0; awsize = 3'b000; awlen = 8'd0;  awburst = 2'b00; awid = 8'd0; awprot = 3'b000;
   end
   
   initial begin
     #100;
     @(posedge clk);
-      //#1;
       wvalid = 1'b1; wstrb = 8'b11111100; wlast = 0; wdata = 64'hFFFF_FFFF_FFFF_FFF0;
     @(posedge clk);
-      //#1;
       wdata = 64'hFFFF_FFFF_FFFF_FFF1;
 	@(posedge clk);
-      //#1;
       wdata = 64'hFFFF_FFFF_FFFF_FFF2;
 	@(posedge clk);
-      //#1;
       wdata = 64'hFFFF_FFFF_FFFF_FFF3; 
 	  wlast = 1;
 	@(posedge clk);
-      //#1;
       wlast = 0;
       while(wready != 1) @(posedge clk);
-      //#1;
       wvalid = 1'b0; wstrb = 8'd0; wlast = 0; wdata = 64'd0;
+    #5000;
     @(posedge clk);
-      //#1;
-      wvalid = 1'b1; wstrb = 8'b11111111; wlast = 0; wdata = 64'hFFFF_FFFF_FFFF_FFF8;
-    @(posedge clk);
-      //#1;
-      wdata = 64'hFFFF_FFFF_FFFF_FFF8;
+      wvalid = 1'b1; wstrb = 8'b11111100; wlast = 0; wdata = 64'hFFFF_FFFF_FFFF_FFFA;
 	@(posedge clk);
-      //#1;
-      wdata = 64'hFFFF_FFFF_FFFF_FFF9;
+      wdata = 64'hFFFF_FFFF_FFFF_FFFB;
 	@(posedge clk);
-      //#1;
-      wdata = 64'hFFFF_FFFF_FFFF_FFFA;
+      wdata = 64'hFFFF_FFFF_FFFF_FFFC;
+	@(posedge clk);
+      wdata = 64'hFFFF_FFFF_FFFF_FFFD; 
 	  wlast = 1;
 	@(posedge clk);
-      //#1;
       wlast = 0;
       while(wready != 1) @(posedge clk);
-      //#1;
-      wvalid = 1'b0; wstrb = 8'd0; wlast = 0; wdata = 64'd0;
-    @(posedge clk);
-      //#1;
-      wvalid = 1'b1; wstrb = 8'b11111111; wlast = 0; wdata = 64'hFFFF_FFFF_FFFF_FFF8;
-    @(posedge clk);
-      //#1;
-      wdata = 64'hFFFF_FFFF_FFFF_FFF9;
-	@(posedge clk);
-      //#1;
-      wdata = 64'hFFFF_FFFF_FFFF_FFFA;
-	@(posedge clk);
-      //#1;
-      wdata = 64'hFFFF_FFFF_FFFF_FFFB; wlast = 1;
-	@(posedge clk);
-      //#1;
-      wlast = 0;
-      while(wready != 1) @(posedge clk);
-      //#1;
       wvalid = 1'b0; wstrb = 8'd0; wlast = 0; wdata = 64'd0;
   end
   initial begin
     #100;
     @(posedge clk)
-      //#1;
 	  bready = 1;
   end
 
