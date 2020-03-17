@@ -1469,7 +1469,7 @@ module x2p_core (// AXI protocol
 		256: bit_num[3:0]  = 4'h6;
 		512: bit_num[3:0]  = 4'h7;
 		1024: bit_num[3:0] = 4'h8;
-		default bit_num = 1'bx;
+		default bit_num[3:0] = 4'bx;
 	  endcase
 	end
 	else if(select_len[LEN_WIDTH-1:0] == 'd3) begin
@@ -1509,6 +1509,7 @@ module x2p_core (// AXI protocol
 	  bit_num[3:0] = 4'hx;
   end
   //bit3_addr, bit4_addr, bit5_addr, bit6_addr
+  
   always_comb begin
     if(bit_num[3:0] == 4'b0011)
 	  bit3_addr[2:0] = paddr[2:0] + 3'd4;
